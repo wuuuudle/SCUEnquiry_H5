@@ -30,31 +30,6 @@
           功能5
         </div>
       </li>
-      <li>
-        <div>
-          功能5
-        </div>
-      </li>
-      <li>
-        <div>
-          功能5
-        </div>
-      </li>
-      <li>
-        <div>
-          功能5
-        </div>
-      </li>
-      <li>
-        <div>
-          功能5
-        </div>
-      </li>
-      <li>
-        <div>
-          功能5
-        </div>
-      </li>
 
       <li style="height: 1px;margin-top: 10px;margin-bottom: 10px"></li>
       <li>

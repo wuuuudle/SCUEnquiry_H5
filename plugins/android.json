@@ -8,13 +8,13 @@
   },
   "installed_plugins": {
     "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "com.example.hello"
-    },
-    "cordova-sqlite-storage": {
-      "PACKAGE_NAME": "com.example.hello"
+      "PACKAGE_NAME": "cn.wuuuudle.SCUEnquiry_H5"
     },
     "cordova-plugin-x-toast": {
-      "PACKAGE_NAME": "com.example.hello"
+      "PACKAGE_NAME": "cn.wuuuudle.SCUEnquiry_H5"
+    },
+    "cordova-sqlite-storage": {
+      "PACKAGE_NAME": "cn.wuuuudle.SCUEnquiry_H5"
     }
   },
   "dependent_plugins": {}

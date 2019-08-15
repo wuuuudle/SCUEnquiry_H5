@@ -97,7 +97,6 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental-runtime-classes" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental-verifier" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/instant-run-apk" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/instant-run-resources" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/instant_app_manifest" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/instant_run_app_info_output_file" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/instant_run_main_apk_resources" />
@@ -128,13 +127,8 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 28 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="CordovaLib" />
-    <orderEntry type="module" module-name="CordovaLib" />
-    <orderEntry type="module" module-name="CordovaLib" />
-    <orderEntry type="module" module-name="CordovaLib" />
-    <orderEntry type="module" module-name="CordovaLib" />
-    <orderEntry type="module" module-name="CordovaLib" />
-    <orderEntry type="module" module-name="CordovaLib" />
+    <orderEntry type="library" name="Gradle: __local_aars__:/home/wuuuudle/WorkSpace/Android/hello/platforms/android/app/libs/sqlite-connector.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" name="Gradle: __local_aars__:/home/wuuuudle/WorkSpace/Android/hello/platforms/android/app/libs/sqlite-native-driver.jar:unspecified@jar" level="project" />
     <orderEntry type="module" module-name="CordovaLib" />
   </component>
 </module>

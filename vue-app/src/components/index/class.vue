@@ -22,33 +22,21 @@
         :value="item.value">
       </el-option>
     </el-select>
-    <div style="height: 100%;overflow: scroll;display: grid;">
-      <!--table style="width: 100%">
-        <thead>
-        <tr>
-          <th colspan="2">节次</th>
-          <th>星期日</th>
-          <th>星期一</th>
-          <th>星期二</th>
-          <th>星期三</th>
-          <th>星期四</th>
-          <th>星期五</th>
-          <th>星期六</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(item,i) in trs" :style="'background-color:'+item.color">
-          <th v-if="item.num" :rowspan="item.num">{{item.big}}</th>
-          <th>{{item.small}}</th>
-          <td v-for="j in Array.from(Array(7),(v,k)=>(k+6)%7+1)" :id="j+'_'+(i+1)">
-            {{j+'_'+(i+1)}}
-          </td>
-        </tr>
-        </tbody>
-      </table-->
+    <div class="CTable">
+      <!-- 添加表头 -->
       <div v-for="item in girdLayout" :style="item.area">{{item.name}}</div>
+      <!-- 添加背景颜色 -->
+      <div style=" grid-area: 2/1/6/10;z-index: 0;background-color: rgba(207,255,228,0.5);border: 0"></div>
+      <div style=" grid-area: 6/1/11/10;z-index: 0;background-color: rgba(255,230,207,0.5);border: 0"></div>
+      <div style=" grid-area: 11/1/14/10;z-index: 0;background-color: rgba(207,228,255,0.5);border: 0"></div>
+      <!-- 展示课程 -->
+      <template v-for="item in classInfo">
+        <div v-for="times in item.time" class="clazz"
+             :style="'grid-area: '+(times.classSession+1)+'/'+(times.classDay%7+3)+'/'+(times.classSession+times.continuingSession+1)+'/'+(times.classDay%7+4)">
+          {{item.name+'@'+times.location}}
+        </div>
+      </template>
     </div>
-    <el-button @click="test">testButton</el-button>
   </div>
 </template>
 
@@ -64,21 +52,9 @@
                 academicTerm: [],
                 weeks: [],
                 valueA: '',
-                valueB: '',
-                trs: [{big: '第一大节', num: 2, small: '第一节', color: 'rgba(207,255,228,0.7)'},
-                    {big: '', num: 0, small: '第二节', color: 'rgba(207,255,228,0.7)'},
-                    {big: '第二大节', num: 2, small: '第三节', color: 'rgba(207,255,228,0.7)'},
-                    {big: '', num: 0, small: '第四节', color: 'rgba(207,255,228,0.7)'},
-                    {big: '第三大节', num: 3, small: '第五节', color: 'rgba(255,230,207,0.7)'},
-                    {big: '', num: 0, small: '第六节', color: 'rgba(255,230,207,0.7)'},
-                    {big: '', num: 0, small: '第七节', color: 'rgba(255,230,207,0.7)'},
-                    {big: '第四大节', num: 2, small: '第八节', color: 'rgba(255,230,207,0.7)'},
-                    {big: '', num: 0, small: '第九节', color: 'rgba(255,230,207,0.7)'},
-                    {big: '第五大节', num: 3, small: '第十节', color: 'rgba(207,228,255,0.7)'},
-                    {big: '', num: 0, small: '第十一节', color: 'rgba(207,228,255,0.7)'},
-                    {big: '', num: 0, small: '第十二节', color: 'rgba(207,228,255,0.7)'}],
+                valueB: -1,
                 girdLayout: [
-                    {area: 'grid-area: 1/1/2/3', name: '节次'},
+                    {area: 'grid-area: 1/1/2/3', name: '节 次'},
                     {area: 'grid-area: 1/3/2/4', name: '星期日'},
                     {area: 'grid-area: 1/4/2/5', name: '星期一'},
                     {area: 'grid-area: 1/5/2/6', name: '星期二'},
@@ -102,7 +78,9 @@
                     {area: 'grid-area: 10/2/11/3', name: '第九节'},
                     {area: 'grid-area: 11/2/12/3', name: '第十节'},
                     {area: 'grid-area: 12/2/13/3', name: '第十一节'},
-                    {area: 'grid-area: 13/2/14/3', name: '第十一节'}],
+                    {area: 'grid-area: 13/2/14/3', name: '第十二节'}],
+                classInfo: [],
+                originData: {}
             }
         },
         methods: {
@@ -110,40 +88,36 @@
                 this.valueB = -1;
                 this.loading = true;
                 getCourseTable(this.valueA).then(response => {
-                    console.log(response.data);
+                    this.originData = response.data;
+                    this.show();
                     this.loading = false;
                 });
             },
             weekSelect() {
-                console.log(this.valueB);
+                this.show();
             },
-            test() {
-                String.prototype.format = function (args) {
-                    let result = this;
-                    if (arguments.length > 0) {
-                        if (arguments.length === 1 && typeof (args) == "object") {
-                            for (let key in args) {
-                                if (args[key] !== undefined) {
-                                    let reg = new RegExp("({" + key + "})", "g");
-                                    result = result.replace(reg, args[key]);
-                                }
-                            }
-                        } else {
-                            for (let i = 0; i < arguments.length; i++) {
-                                if (arguments[i] !== undefined) {
-                                    let reg = new RegExp("({)" + i + "(})", "g");
-                                    result = result.replace(reg, arguments[i]);
-                                }
-                            }
-                        }
-                    }
-                    return result;
-                };
+            show() {
+                this.classInfo = this.originData.dateList[0].selectCourseList.map(item => {
+                    let name = item.courseName;
+                    let time = null;
+                    if (item.timeAndPlaceList)
+                        time = item.timeAndPlaceList.filter(item2 => {
+                            if (this.valueB === -1)
+                                return true;
+                            return item2.classWeek[this.valueB] === '1';
+                        }).map(item2 => {
+                            let classDay = item2.classDay;
+                            let classSession = item2.classSessions;
+                            let continuingSession = item2.continuingSession;
+                            let location = item2.campusName + item2.teachingBuildingName + item2.classroomName;
+                            return {classDay, classSession, continuingSession, location}
+                        });
+                    return {name, time};
+                });
             }
         },
         mounted() {
-            //debug
-            //this.loading = true;
+            this.loading = true;
             this.weeks.push({
                 label: '总览',
                 value: -1
@@ -163,8 +137,11 @@
                                 value: temp.attr('value')
                             }
                         });
-                        this.valueA = this.academicTerm.length !== 0 ? this.academicTerm[0].value : '';
                         this.loading = false;
+                        if (this.academicTerm.length !== 0) {
+                            this.valueA = this.academicTerm[0].value;
+                            this.academicSelect();
+                        }
                     }
                 });
             });
@@ -181,38 +158,38 @@
     width: 100%;
   }
 
-  table {
+  .CTable {
+    user-select: none;
     background-color: white;
-    border: 1px solid #ddd;
-    border-collapse: collapse;
-    border-spacing: 0;
+    height: 100%;
+    overflow: scroll;
+    display: grid;
+    grid-template-columns: 30px 30px 60px 60px 60px 60px 60px 60px 60px;
+    grid-template-rows: 30px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 100px 100px;
 
-    td {
-      border: 1px solid #ddd;
-      height: 80px;
-      max-height: 80px;
-      max-width: 50px;
-      padding: 0;
+    .clazz {
+      display: block;
+      overflow-wrap: break-word;
+      border-radius: 10px;
+      background-color: rgba(9*16, 9*16+3, 9*16+9, 0.5);
+      padding-top: 5px;
+      font-size: 12px;
+      z-index: 1;
     }
 
-    th {
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 14px;
       font-weight: normal;
       color: #909399;
-      border: 1px solid #ddd;
       padding: 0;
-    }
-
-    thead {
-      th {
-        min-width: 50px;
-      }
-    }
-
-    tbody {
-      th {
-        height: 75px;
-      }
+      border: 1px solid #ddd;
+      margin-right: -1px;
+      margin-bottom: -1px;
+      z-index: 1;
     }
   }
+
 </style>

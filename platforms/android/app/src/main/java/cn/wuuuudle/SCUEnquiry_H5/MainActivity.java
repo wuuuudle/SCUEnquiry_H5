@@ -17,7 +17,7 @@
        under the License.
  */
 
-package com.example.hello;
+package cn.wuuuudle.SCUEnquiry_H5;
 
 import android.os.Bundle;
 import org.apache.cordova.*;
