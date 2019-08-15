@@ -1,6 +1,6 @@
 <template>
   <div style="height: 100%">
-    <el-row style="margin: 15px;" class="content">
+    <el-row class="content">
       <el-col :span="24">
         <el-autocomplete
           v-model="username"
@@ -60,7 +60,7 @@
     import $ from 'jquery'
 
     export default {
-        name: "home",
+        name: "login",
         data() {
             return {
                 username: '',
@@ -76,13 +76,13 @@
         },
         methods: {
             ...mapMutations(['setUsername']),
-            gotoHome(data) {
+            gotoIndex(data) {
                 this.$notify.success({message: '登录成功'});
                 $.each($.parseHTML(data), (i, item) => {
                     if (item.id === 'navbar') {
                         let name = $($.parseHTML($(item).find('.user-info:first').html())[2]).text().trim();
                         this.setUsername(name);
-                        this.$router.push('/home');
+                        this.$router.push('/index');
                     }
                 });
             },
@@ -95,7 +95,7 @@
                 login(this.username, this.password, this.captcha).then(res => {
                     this._addUser(this.username, this.password);
                     loadinstance.close();
-                    this.gotoHome(res.data);
+                    this.gotoIndex(res.data);
                 }).catch(err => {
                     let bad = err.response.request.responseURL;
                     if (bad.endsWith('badCaptcha'))
@@ -185,7 +185,7 @@
 
                 if (res.request.responseURL.endsWith('index.jsp')) {
                     ifLoginSuccess = true;
-                    this.gotoHome(res.data);
+                    this.gotoIndex(res.data);
                 }
             }).finally(() => {
                 loadinstances.close();
@@ -218,7 +218,7 @@
 <style lang="scss" rel="stylesheet/scss" scoped>
 
   .content {
-    margin: 0 auto;
+    margin: 0 15px;
     position: relative;
     top: 50%;
     transform: translateY(-50%);
